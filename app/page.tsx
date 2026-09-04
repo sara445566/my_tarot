@@ -27,6 +27,12 @@ type Arcana = {
 };
 type Drawn = Arcana & { reversed: boolean };
 type SpreadId = 'daily' | 'love' | 'career' | 'yesno' | 'three';
+type SavedReading = {
+  date: string;
+  question: string;
+  spread: string;
+  cards: { name: string; reversed: boolean }[];
+};
 
 const arcana: Arcana[] = [
   {
@@ -390,6 +396,15 @@ export default function Home() {
   const [drag, setDrag] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [notice, setNotice] = useState('');
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [savedReadings, setSavedReadings] = useState<SavedReading[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      return JSON.parse(localStorage.getItem('lumen-readings') || '[]');
+    } catch {
+      return [];
+    }
+  });
   const ritualRef = useRef<HTMLElement>(null);
   const activeSpread = spreads.find((item) => item.id === spread)!;
   const fan = useMemo(() => Array.from({ length: 11 }), []);
@@ -460,14 +475,16 @@ export default function Home() {
     ritualRef.current?.scrollIntoView({ behavior: 'smooth' });
   }
   function saveReading() {
-    const saved = JSON.parse(localStorage.getItem('lumen-readings') || '[]');
+    const saved: SavedReading[] = [...savedReadings];
     saved.unshift({
       date: new Date().toISOString(),
       question,
       spread: activeSpread.title,
       cards: drawn.map(({ name, reversed }) => ({ name, reversed })),
     });
-    localStorage.setItem('lumen-readings', JSON.stringify(saved.slice(0, 20)));
+    const next = saved.slice(0, 20);
+    localStorage.setItem('lumen-readings', JSON.stringify(next));
+    setSavedReadings(next);
     setNotice('這次啟示已收藏在你的裝置中');
     window.setTimeout(() => setNotice(''), 2600);
   }
@@ -542,9 +559,20 @@ export default function Home() {
             <small>LUMEN TAROT</small>
           </span>
         </a>
-        <span className="header-whisper">
-          <Sparkles aria-hidden="true" /> 今夜，讓星辰替你回答
-        </span>
+        <div className="header-actions">
+          <span className="header-whisper">
+            <Sparkles aria-hidden="true" /> 今夜，讓星辰替你回答
+          </span>
+          <button
+            className="collection-button"
+            onClick={() => setHistoryOpen(true)}
+            aria-label="打開星夜收藏匣"
+          >
+            <Bookmark aria-hidden="true" />
+            <span>收藏匣</span>
+            {savedReadings.length > 0 && <b>{savedReadings.length}</b>}
+          </button>
+        </div>
       </header>
 
       <section id="top" className="hero">
@@ -852,6 +880,62 @@ export default function Home() {
         <div className="toast">
           <Check aria-hidden="true" />
           {notice}
+        </div>
+      )}
+      {historyOpen && (
+        <div
+          className="collection-overlay"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setHistoryOpen(false);
+          }}
+        >
+          <dialog
+            open
+            className="collection-drawer"
+            aria-modal="true"
+            aria-labelledby="collection-title"
+          >
+            <button
+              className="drawer-close"
+              onClick={() => setHistoryOpen(false)}
+              aria-label="關閉收藏匣"
+            >
+              ×
+            </button>
+            <p className="eyebrow">
+              <span /> YOUR CONSTELLATION
+            </p>
+            <h2 id="collection-title">星夜收藏匣</h2>
+            <p>你曾經向牌面提出的問題，都化成了這裡的一點星光。</p>
+            {savedReadings.length === 0 ? (
+              <div className="collection-empty">
+                <MoonStar aria-hidden="true" />
+                <b>收藏匣還是空的</b>
+                <span>完成一次占卜並收藏，它就會出現在這裡。</span>
+              </div>
+            ) : (
+              <div className="saved-list">
+                {savedReadings.map((item, index) => (
+                  <article key={`${item.date}-${index}`}>
+                    <time>
+                      {new Date(item.date).toLocaleDateString('zh-TW')}
+                    </time>
+                    <span>{item.spread}</span>
+                    <h3>{item.question || '此刻，宇宙想讓我知道什麼？'}</h3>
+                    <p>
+                      {item.cards
+                        .map(
+                          (card) =>
+                            `${card.name}・${card.reversed ? '逆位' : '正位'}`,
+                        )
+                        .join('　')}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            )}
+          </dialog>
         </div>
       )}
     </main>

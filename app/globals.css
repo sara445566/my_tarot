@@ -136,6 +136,43 @@ button {
   width: 14px;
   color: var(--gold);
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.collection-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  color: #bdb1bd;
+  border: 1px solid rgba(217, 169, 95, 0.24);
+  border-radius: 99px;
+  background: rgba(21, 23, 44, 0.66);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.collection-button:hover {
+  color: var(--paper);
+  border-color: rgba(217, 169, 95, 0.55);
+}
+.collection-button svg {
+  width: 13px;
+  color: var(--gold);
+}
+.collection-button b {
+  display: grid;
+  place-items: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  color: var(--ink);
+  background: var(--blush);
+  border-radius: 99px;
+  font-size: 8px;
+}
 .hero {
   min-height: calc(100vh - 78px);
   position: relative;
@@ -1110,6 +1147,113 @@ footer {
   background: #0a0c19;
   color: #8f8494;
 }
+.collection-overlay {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(4, 5, 13, 0.72);
+  backdrop-filter: blur(8px);
+  animation: overlay-in 0.25s both;
+}
+.collection-drawer {
+  margin: 0 0 0 auto;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  width: min(92vw, 520px);
+  height: 100%;
+  overflow-y: auto;
+  padding: 58px 34px;
+  color: var(--paper);
+  background: linear-gradient(165deg, #1c1d37, #101226);
+  border-left: 1px solid rgba(217, 169, 95, 0.35);
+  box-shadow: -30px 0 70px rgba(0, 0, 0, 0.3);
+  animation: drawer-in 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.collection-drawer > .eyebrow {
+  margin-bottom: 14px;
+}
+.collection-drawer > h2 {
+  margin: 0;
+  font-family: 'Noto Serif TC', 'Songti TC', serif;
+  font-size: 35px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.collection-drawer > p:not(.eyebrow) {
+  color: #958a9a;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.drawer-close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 34px;
+  height: 34px;
+  color: #9e93a2;
+  border: 1px solid rgba(217, 169, 95, 0.22);
+  border-radius: 50%;
+  background: transparent;
+  font-size: 22px;
+}
+.collection-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 60px;
+  padding: 40px 20px;
+  color: #756c7d;
+  border: 1px dashed rgba(217, 169, 95, 0.25);
+  border-radius: 18px;
+}
+.collection-empty svg {
+  width: 30px;
+  color: var(--gold);
+}
+.collection-empty b {
+  color: #c4b8c1;
+  font-family: 'Noto Serif TC', 'Songti TC', serif;
+}
+.collection-empty span {
+  font-size: 10px;
+}
+.saved-list {
+  display: grid;
+  gap: 11px;
+  margin-top: 30px;
+}
+.saved-list article {
+  padding: 17px;
+  border: 1px solid rgba(217, 169, 95, 0.2);
+  border-radius: 14px;
+  background: rgba(8, 10, 24, 0.35);
+}
+.saved-list time,
+.saved-list article > span {
+  color: #887d8d;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+.saved-list article > span {
+  float: right;
+  color: var(--gold);
+}
+.saved-list h3 {
+  margin: 9px 0 8px;
+  font-family: 'Noto Serif TC', 'Songti TC', serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.55;
+}
+.saved-list p {
+  margin: 0;
+  color: #a89cab;
+  font-size: 10px;
+}
 .footer-sigil {
   display: grid;
   place-items: center;
@@ -1156,6 +1300,16 @@ footer small {
 @keyframes drag-shuffle {
   to {
     transform: translateX(34px) rotate(8deg);
+  }
+}
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
   }
 }
 @keyframes message-in {
@@ -1215,6 +1369,23 @@ footer small {
 @media (max-width: 560px) {
   .cursor-aurora {
     display: none;
+  }
+  .collection-button span {
+    display: none;
+  }
+  .header-actions {
+    gap: 0;
+  }
+  .collection-button {
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    padding: 0;
+  }
+  .collection-button b {
+    position: absolute;
+    top: -4px;
+    right: -5px;
   }
   .ritual-room {
     padding: 66px 16px 60px;

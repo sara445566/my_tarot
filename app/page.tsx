@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import { positionLabels, tarotCards, type TarotCard } from './tarot-data';
 
@@ -115,9 +115,11 @@ export default function TarotPage() {
 
       {stage === 'choose' && <section className="choose-stage">
         <div className="stage-heading"><p className="kicker">LISTEN TO YOUR FIRST INSTINCT</p><h1>憑直覺，選出 {currentSpread.count} 張牌</h1><p>點選你真正有感覺的位置。選中的牌會離開牌列並移到上方；確認前都能放回原位。</p></div>
+        <div className="selection-table">
         <div className="selection-tray">{Array.from({ length: currentSpread.count }).map((_, index) => { const item = selected[index]; return <div className="tray-slot" key={index}><span className="slot-label">{positionLabels[currentSpread.count][index]}</span>{item ? <button className="picked-card" onClick={() => unpick(item.deckIndex)} aria-label={`放回第 ${item.deckIndex + 1} 個位置的牌`}><BackDesign /><span className="remove-hint">點擊放回</span></button> : <div className="empty-card"><span>{index + 1}</span></div>}</div>; })}</div>
         <div className="selection-status"><span>{selected.length}</span> / {currentSpread.count} 張已選</div>
-        <div className="deck-field" aria-label="78 張牌，點擊選牌">{deck.map((card, index) => selectedIndexes.has(index) ? <div className="deck-hole" key={card.id}><span>{index + 1}</span></div> : <button className="deck-card" key={card.id} onClick={() => pick(card, index)} aria-label={`選擇第 ${index + 1} 個位置`}><BackDesign small /></button>)}</div>
+        <div className="deck-field" aria-label="78 張牌，環形排列，點擊選牌">{deck.map((card, index) => selectedIndexes.has(index) ? <div className="deck-hole" style={{ '--deck-index': index } as CSSProperties} key={card.id}><span>{index + 1}</span></div> : <button className="deck-card" style={{ '--deck-index': index } as CSSProperties} key={card.id} onClick={() => pick(card, index)} aria-label={`選擇第 ${index + 1} 個位置`}><BackDesign small /></button>)}</div>
+        </div>
         <div className="sticky-confirm"><button className="secondary-button" onClick={startShuffle}>重新洗牌</button><button className="ritual-button" disabled={selected.length !== currentSpread.count} onClick={confirm}>確認選牌 <span>→</span></button></div>
       </section>}
 

@@ -72,7 +72,7 @@ main { min-height: 100vh; overflow: hidden; }
 .tarot-card-back, .tarot-card-front { position: absolute; inset: 0; overflow: hidden; border: 1px solid var(--gold); border-radius: 3px; backface-visibility: hidden; }
 .tarot-card-front { background: var(--blush); transform: rotateY(180deg); }
 .tarot-card.is-reversed.is-revealed .tarot-card-front img { transform: rotate(180deg); }
-.tarot-card-front img { object-fit: cover; transition: transform .35s ease; }
+.tarot-card-front img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
 .card-title { position: absolute; left: 7%; right: 7%; bottom: 3.5%; min-height: 13%; padding: 6px 8px; display: grid; grid-template-columns: auto 1fr; gap: 0 7px; align-items: center; color: var(--ink); background: rgba(255,249,243,.9); border: 1px solid rgba(184,130,62,.62); backdrop-filter: blur(9px); }
 .card-title span { grid-row: 1/3; color: var(--gold); font-family: serif; font-size: 13px; }
 .card-title strong { font-family: serif; font-size: clamp(10px,1vw,15px); letter-spacing: .08em; }
@@ -147,7 +147,7 @@ main { min-height: 100vh; overflow: hidden; }
 @keyframes arrive { from{opacity:0;transform:translateY(22px) scale(.9)} to{opacity:1;transform:none} }
 .selection-status { position: absolute; left: 50%; top: calc(22% + 82px); z-index: 121; color: #aaa5b4; text-align: center; white-space: nowrap; font-size: 9px; transform: translateX(-50%); }.selection-status span { color: var(--gold-light); font-family: serif; font-size: 18px; }
 .deck-field { position: absolute; inset: 0; border: 1px solid rgba(228,193,127,.12); background: linear-gradient(180deg,transparent 48%,rgba(255,255,255,.018)); box-shadow: 0 25px 80px rgba(0,0,0,.18); overflow: visible; }
-.deck-card,.deck-hole { width: clamp(25px,3vw,38px); aspect-ratio: 2/3; position: absolute; left: calc(6% + (var(--deck-column) * 2.315%)); top: calc(54% + (var(--deck-row) * 22%)); border-radius: 2px; transform: translate(-50%,-50%) translateY(var(--deck-curve)) rotate(var(--deck-tilt)); }.deck-card { z-index: calc(var(--deck-index) + 1); padding: 0; background: var(--midnight); border: 1px solid rgba(184,130,62,.65); cursor: pointer; transition: transform .2s,box-shadow .2s,filter .2s; }.deck-card:hover,.deck-card:focus-visible { z-index: 110; transform: translate(-50%,-50%) translateY(calc(var(--deck-curve) - 12px)) rotate(var(--deck-tilt)) scale(1.24); box-shadow: 0 10px 20px rgba(0,0,0,.55); filter: brightness(1.22); }.deck-hole { z-index: 0; display: grid; place-items: center; color: rgba(228,193,127,.16); border: 1px dashed rgba(228,193,127,.18); }.deck-hole span { font-size: 6px; }
+.deck-card,.deck-hole { width: clamp(25px,3vw,38px); aspect-ratio: 2/3; position: absolute; border-radius: 2px; transform: translate(-50%,-50%) translateY(var(--deck-curve)) rotate(var(--deck-tilt)); }.deck-card { padding: 0; background: var(--midnight); border: 1px solid rgba(184,130,62,.65); cursor: pointer; transition: transform .2s,box-shadow .2s,filter .2s; }.deck-card:hover,.deck-card:focus-visible { z-index: 110 !important; transform: translate(-50%,-50%) translateY(calc(var(--deck-curve) - 12px)) rotate(var(--deck-tilt)) scale(1.24); box-shadow: 0 10px 20px rgba(0,0,0,.55); filter: brightness(1.22); }.deck-hole { display: grid; place-items: center; color: rgba(228,193,127,.16); border: 1px dashed rgba(228,193,127,.18); }.deck-hole span { font-size: 6px; }
 .deck-scrubber { display: none; }
 .sticky-confirm { margin: 10px auto 0; display: flex; justify-content: center; gap: 10px; }.sticky-confirm .ritual-button { color: var(--ink); background: var(--blush); }.sticky-confirm .ritual-button:hover { background: #fae1e1; }
 
@@ -202,7 +202,7 @@ footer { min-height: 105px; padding: 22px; display: flex; align-items: center; j
   .selection-tray { top: 20%; gap: 4px; }.tray-slot { width: 61px; }.slot-label { height: 13px; margin-bottom: 4px; font-size: 7px; }.picked-card,.empty-card { width: 58px; }.empty-card span { width: 20px; height: 20px; font-size: 8px; }
   .selection-status { top: calc(20% + 58px); font-size: 8px; }.selection-status span { font-size: 15px; }
   .deck-card,.deck-hole { width: 24px; }.deck-card:hover,.deck-card:focus-visible { transform: translate(-50%,-50%) translateY(calc(var(--deck-curve) - 9px)) rotate(var(--deck-tilt)) scale(1.18); }
-  .deck-card.is-preview { z-index: 130; transform: translate(-50%,-50%) translateY(calc(var(--deck-curve) - 22px)) rotate(var(--deck-tilt)) scale(1.72); box-shadow: 0 12px 24px rgba(0,0,0,.58); filter: brightness(1.2); }
+  .deck-card.is-preview { z-index: 130 !important; transform: translate(-50%,-50%) translateY(calc(var(--deck-curve) - 22px)) rotate(var(--deck-tilt)) scale(1.72); box-shadow: 0 12px 24px rgba(0,0,0,.58); filter: brightness(1.2); }
   .deck-scrubber { position: absolute; left: 6%; right: 6%; bottom: 1px; z-index: 160; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; color: #aaa5b4; font-size: 8px; letter-spacing: .08em; }
   .deck-scrubber input { width: 100%; height: 30px; margin: 0; cursor: ew-resize; accent-color: var(--gold-light); touch-action: pan-x; }
   .deck-scrubber small { min-width: 35px; color: var(--gold-light); font-size: 8px; text-align: right; }

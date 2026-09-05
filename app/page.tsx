@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState, type CSSProperties } from 'react';
-import Image from 'next/image';
 import { positionLabels, tarotCards, type TarotCard } from './tarot-data';
 
 type SpreadId = 'daily' | 'yesno' | 'three';
@@ -46,7 +45,7 @@ function CardFace({ card, reversed, revealed = true }: { card: TarotCard; revers
       <div className="tarot-card-inner">
         <div className="tarot-card-back"><BackDesign /></div>
         <div className="tarot-card-front">
-          <Image src={card.image} alt={`${card.name}原創牌面`} fill sizes="(max-width: 600px) 30vw, 260px" />
+          <img src={card.image} alt={`${card.name}原創牌面`} width="520" height="780" loading="eager" decoding="async" />
           <div className="card-title"><span>{card.number}</span><strong>{card.name}</strong><small>{card.en}</small></div>
         </div>
       </div>
@@ -120,7 +119,7 @@ export default function TarotPage() {
         <div className="selection-table">
         <div className="selection-tray">{Array.from({ length: currentSpread.count }).map((_, index) => { const item = selected[index]; return <div className="tray-slot" key={index}><span className="slot-label">{positionLabels[currentSpread.count][index]}</span>{item ? <button className="picked-card" onClick={() => unpick(item.deckIndex)} aria-label={`放回第 ${item.deckIndex + 1} 個位置的牌`}><BackDesign /><span className="remove-hint">點擊放回</span></button> : <div className="empty-card"><span>{index + 1}</span></div>}</div>; })}</div>
         <div className="selection-status"><span>{selected.length}</span> / {currentSpread.count} 張已選</div>
-        <div className="deck-field" aria-label="78 張牌，分成兩排弧形重疊排列，點擊選牌">{deck.map((card, index) => { const column = index % 39; const cardStyle = { '--deck-index': index, '--deck-row': Math.floor(index / 39), '--deck-column': column, '--deck-curve': `${Math.round(((column - 19) / 19) ** 2 * 20)}px`, '--deck-tilt': `${(column - 19) * .32}deg` } as CSSProperties; return selectedIndexes.has(index) ? <div className="deck-hole" style={cardStyle} key={card.id}><span>{index + 1}</span></div> : <button className={`deck-card ${previewIndex === index ? 'is-preview' : ''}`} style={cardStyle} key={card.id} onClick={() => pick(card, index)} aria-label={`選擇第 ${index + 1} 個位置`}><BackDesign small /></button>; })}</div>
+        <div className="deck-field" aria-label="78 張牌，分成兩排弧形重疊排列，點擊選牌">{deck.map((card, index) => { const column = index % 39; const cardStyle = { left: `${6 + column * (88 / 38)}%`, top: `${54 + Math.floor(index / 39) * 22}%`, zIndex: index + 1, '--deck-curve': `${Math.round(((column - 19) / 19) ** 2 * 20)}px`, '--deck-tilt': `${(column - 19) * .32}deg` } as CSSProperties; return selectedIndexes.has(index) ? <div className="deck-hole" style={cardStyle} key={card.id}><span>{index + 1}</span></div> : <button className={`deck-card ${previewIndex === index ? 'is-preview' : ''}`} style={cardStyle} key={card.id} onClick={() => pick(card, index)} aria-label={`選擇第 ${index + 1} 個位置`}><BackDesign small /></button>; })}</div>
         <label className="deck-scrubber"><span>左右滑動找牌</span><input type="range" min="0" max={deck.length - 1} value={previewIndex} onChange={(event) => setPreviewIndex(Number(event.target.value))} aria-label="滑動預覽牌的位置" /><small>{previewIndex + 1} / {deck.length}</small></label>
         </div>
         <div className="sticky-confirm"><button className="secondary-button" onClick={startShuffle}>重新洗牌</button><button className="ritual-button" disabled={selected.length !== currentSpread.count} onClick={confirm}>確認選牌 <span>→</span></button></div>

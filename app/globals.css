@@ -87,12 +87,12 @@ main { min-height: 100vh; overflow: hidden; }
 .card-back-art.small .back-star { font-size: 23px; }.card-back-art.small .back-moon { font-size: 11px; }.card-back-art.small .back-corner { font-size: 5px; }
 
 /* Spread selection as a magazine contents page */
-.reading-room { min-height: 100vh; padding: clamp(80px,10vw,150px) clamp(24px,7vw,110px); display: grid; grid-template-columns: minmax(270px,.72fr) minmax(500px,1.28fr); grid-template-rows: auto auto auto auto; column-gap: clamp(50px,8vw,135px); align-content: center; background: var(--paper); color: var(--ink); position: relative; }
-.reading-room:before { content: "✦"; position: absolute; top: 46px; left: 50%; color: var(--gold); }
+.reading-room { min-height: 100vh; padding: clamp(62px,7.5vw,105px) clamp(24px,7vw,110px); display: grid; grid-template-columns: minmax(270px,.72fr) minmax(500px,1.28fr); grid-template-rows: auto auto auto auto; column-gap: clamp(50px,8vw,135px); align-content: center; background: var(--paper); color: var(--ink); position: relative; }
+.reading-room:before { content: "✦"; position: absolute; top: 30px; left: 50%; color: var(--gold); }
 .section-heading { grid-row: 1/5; align-self: start; position: sticky; top: 120px; text-align: left; }
-.section-heading:after { content: "ARCANA · 78"; display: block; width: 82px; margin-top: 54px; padding-top: 12px; color: var(--gold); border-top: 1px solid var(--gold); font-family: serif; font-size: 9px; letter-spacing: .19em; }
-.section-heading h2 { max-width: 380px; margin: 16px 0 22px; font-family: "Noto Serif TC",serif; font-size: clamp(40px,4.2vw,64px); font-weight: 500; line-height: 1.16; }
-.section-heading > p:last-child { max-width: 390px; color: #777184; font-size: 13px; line-height: 1.9; }
+.section-heading:after { content: "ARCANA · 78"; display: block; width: 82px; margin-top: 36px; padding-top: 10px; color: var(--gold); border-top: 1px solid var(--gold); font-family: serif; font-size: 9px; letter-spacing: .19em; }
+.section-heading h2 { max-width: 380px; margin: 12px 0 16px; font-family: "Noto Serif TC",serif; font-size: clamp(36px,3.8vw,58px); font-weight: 500; line-height: 1.14; }
+.section-heading > p:last-child { max-width: 390px; color: #777184; font-size: 13px; line-height: 1.75; }
 .spread-grid { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); }
 .spread-option { min-height: 165px; padding: 21px 12px; display: grid; grid-template-columns: 72px 135px 1fr 28px; grid-template-rows: auto 1fr; column-gap: 22px; align-items: center; position: relative; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line); cursor: pointer; text-align: left; transition: background .25s,padding .25s; }
 .spread-option:hover, .spread-option.active { padding-left: 24px; background: var(--shell); }
@@ -166,7 +166,7 @@ footer { min-height: 105px; padding: 22px; display: flex; align-items: center; j
   .hero-copy:after { display: none; }
   .hero h1 { font-size: clamp(44px,6.2vw,62px); }
   .hero-cards { min-height: 0; padding: 50px 14px 34px; }
-  .reading-room { display: block; }.section-heading { position: static; margin: 0 auto 55px; text-align: center; }.section-heading h2,.section-heading>p:last-child { margin-left: auto; margin-right: auto; }.section-heading:after { margin-left: auto; margin-right: auto; }
+  .reading-room { display: block; }.section-heading { position: static; margin: 0 auto 38px; text-align: center; }.section-heading h2,.section-heading>p:last-child { margin-left: auto; margin-right: auto; }.section-heading:after { margin-left: auto; margin-right: auto; }
   .deck-field { grid-template-columns: repeat(10,1fr); }
 }
 
@@ -187,7 +187,7 @@ footer { min-height: 105px; padding: 22px; display: flex; align-items: center; j
   .hero-cards:before { top: 10px; left: 12px; font-size: 6px; }
   .hero-cards:after { right: 7px; bottom: 5px; font-size: 6px; }
   .orbit { width: 310px; }.orbit-two { width: 440px; }
-  .reading-room { padding: 85px 15px; }.section-heading h2 { font-size: 42px; }.spread-option { min-height: 138px; padding: 15px 5px; grid-template-columns: 28px 95px 1fr 24px; column-gap: 10px; }.spread-option:hover,.spread-option.active { padding-left: 9px; }.mini-spread { height: 88px; }.mini-spread>span { width: 46px; }.mini-spread.count-3>span { width: 29px; }.spread-option>strong { font-size: 19px; }.spread-option>p { font-size: 10px; line-height: 1.55; }.topic-tabs { grid-template-columns: 1fr; }.topic-tabs button { border-right: 0; border-bottom: 1px solid var(--line); }.topic-tabs button:last-child { border-bottom: 0; }
+  .reading-room { padding: 58px 15px 68px; }.reading-room:before { top: 22px; }.section-heading { margin-bottom: 30px; }.section-heading h2 { margin-top: 10px; margin-bottom: 13px; font-size: 36px; }.section-heading > p:last-child { line-height: 1.65; }.section-heading:after { margin-top: 26px; }.spread-option { min-height: 138px; padding: 15px 5px; grid-template-columns: 28px 95px 1fr 24px; column-gap: 10px; }.spread-option:hover,.spread-option.active { padding-left: 9px; }.mini-spread { height: 88px; }.mini-spread>span { width: 46px; }.mini-spread.count-3>span { width: 29px; }.spread-option>strong { font-size: 19px; }.spread-option>p { font-size: 10px; line-height: 1.55; }.topic-tabs { grid-template-columns: 1fr; }.topic-tabs button { border-right: 0; border-bottom: 1px solid var(--line); }.topic-tabs button:last-child { border-bottom: 0; }
   .ritual-stage,.choose-stage,.reading-stage { padding: 55px 13px 80px; }.stage-heading h1 { font-size: 39px; }.selection-tray { min-height: 190px; gap: 7px; }.tray-slot { width: 99px; }.picked-card,.empty-card { width: 94px; }.deck-field { padding: 10px; grid-template-columns: repeat(6,1fr); gap: 7px; }.sticky-confirm,.reading-actions { flex-direction: column; }.sticky-confirm button,.reading-actions button { width: 100%; }
   .reveal-grid { gap: 7px; }.reveal-item { width: 31vw; }.reveal-item>span { letter-spacing: .08em; }.card-title { display: none; }.interpretation { margin-top: 55px; }.reading-cards-copy article { min-height: 0; grid-template-columns: 1fr; }.reading-cards-copy header { grid-column: 1; grid-row: auto; margin-bottom: 20px; }.synthesis { padding: 38px 22px; }.synthesis:before { right: 18px; top: 18px; }
 }

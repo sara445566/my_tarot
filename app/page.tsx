@@ -30,45 +30,7 @@ const shuffle = <T,>(items: T[]) => {
 };
 
 function BackDesign({ small = false }: { small?: boolean }) {
-  return (
-    <span className={`card-back-art${small ? ' small' : ''}`} aria-hidden="true">
-      <svg className="back-sigil" viewBox="0 0 200 300" focusable="false">
-        <g className="sigil-frame">
-          <rect x="10" y="10" width="180" height="280" rx="4" />
-          <rect x="17" y="17" width="166" height="266" rx="2" />
-          <path d="M17 48 48 17M152 17l31 31M17 252l31 31M152 283l31-31" />
-          <path d="M25 61V25h36M139 25h36v36M25 239v36h36M139 275h36v-36" />
-        </g>
-        <g className="sigil-orbits">
-          <ellipse cx="100" cy="150" rx="76" ry="34" transform="rotate(-26 100 150)" />
-          <ellipse cx="100" cy="150" rx="76" ry="34" transform="rotate(26 100 150)" />
-          <circle cx="100" cy="150" r="58" />
-          <circle cx="100" cy="150" r="45" />
-          <path d="M100 92v116M42 150h116M59 109l82 82M141 109l-82 82" />
-        </g>
-        <g className="sigil-phases">
-          <circle cx="100" cy="48" r="15" />
-          <path d="M100 33a15 15 0 0 0 0 30c-9-5-9-25 0-30Z" />
-          <circle cx="100" cy="252" r="15" />
-          <path d="M100 237a15 15 0 0 1 0 30c9-5 9-25 0-30Z" />
-          <circle cx="43" cy="93" r="5" /><circle cx="157" cy="207" r="5" />
-          <circle cx="157" cy="93" r="5" /><circle cx="43" cy="207" r="5" />
-        </g>
-        <g className="sigil-stars">
-          <path d="m100 120 7 23 23 7-23 7-7 23-7-23-23-7 23-7Z" />
-          <path d="m100 133 5 12 12 5-12 5-5 12-5-12-12-5 12-5Z" />
-          <path d="m48 48 3 8 8 3-8 3-3 8-3-8-8-3 8-3Zm104 182 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" />
-          <path d="m152 48 3 8 8 3-8 3-3 8-3-8-8-3 8-3ZM48 230l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" />
-        </g>
-        <g className="sigil-beads">
-          <circle cx="100" cy="104" r="2" /><circle cx="100" cy="196" r="2" />
-          <circle cx="54" cy="150" r="2" /><circle cx="146" cy="150" r="2" />
-          <circle cx="68" cy="118" r="2" /><circle cx="132" cy="182" r="2" />
-          <circle cx="132" cy="118" r="2" /><circle cx="68" cy="182" r="2" />
-        </g>
-      </svg>
-    </span>
-  );
+  return <span className={`card-back-art${small ? ' small' : ''}`} aria-hidden="true" />;
 }
 
 function CardFace({ card, reversed, revealed = true }: { card: TarotCard; reversed: boolean; revealed?: boolean }) {
@@ -94,40 +56,40 @@ export default function TarotPage() {
   const [selected, setSelected] = useState<Selection[]>([]);
   const [revealed, setRevealed] = useState<boolean[]>([]);
   const [shuffleKey, setShuffleKey] = useState(0);
-  const [previewIndex, setPreviewIndex] = useState(38);
-  const [touchPreviewIndex, setTouchPreviewIndex] = useState<number | null>(null);
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const questionRef = useRef<HTMLLabelElement>(null);
+  const questionInputRef = useRef<HTMLTextAreaElement>(null);
 
   const currentSpread = spreadOptions.find((item) => item.id === spread)!;
   const selectedIndexes = useMemo(() => new Set(selected.map((item) => item.deckIndex)), [selected]);
   const topicName = topics.find((item) => item.id === topic)?.name ?? '綜合';
 
   const startShuffle = () => {
-    setStage('shuffle'); setSelected([]); setRevealed([]); setPreviewIndex(38); setTouchPreviewIndex(null); setShuffleKey((value) => value + 1);
+    setStage('shuffle'); setSelected([]); setRevealed([]); setPreviewIndex(null); setShuffleKey((value) => value + 1);
     window.setTimeout(() => { setDeck(shuffle(tarotCards)); setStage('choose'); }, 1150);
   };
   const pick = (card: TarotCard, deckIndex: number) => {
     if (selectedIndexes.has(deckIndex) || selected.length >= currentSpread.count) return;
     setSelected((items) => [...items, { card, deckIndex, reversed: Math.random() < 0.32 }]);
-    setPreviewIndex((deckIndex + 1) % deck.length);
-    setTouchPreviewIndex(null);
+    setPreviewIndex(null);
   };
   const handleDeckCardClick = (card: TarotCard, deckIndex: number) => {
     const needsPreview = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-    if (needsPreview && touchPreviewIndex !== deckIndex) {
+    if (needsPreview && previewIndex !== deckIndex) {
       setPreviewIndex(deckIndex);
-      setTouchPreviewIndex(deckIndex);
       return;
     }
     pick(card, deckIndex);
   };
+  const previewCard = (deckIndex: number) => {
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) setPreviewIndex(deckIndex);
+  };
   const chooseSpread = (nextSpread: SpreadId) => {
+    questionInputRef.current?.focus({ preventScroll: true });
     setSpread(nextSpread);
-    if (window.matchMedia('(max-width: 620px)').matches) {
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => questionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-      });
-    }
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => questionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    });
   };
   const unpick = (deckIndex: number) => setSelected((items) => items.filter((item) => item.deckIndex !== deckIndex));
   const confirm = () => {
@@ -137,7 +99,7 @@ export default function TarotPage() {
   const revealCard = (index: number) => setRevealed((items) => items.map((value, i) => (i === index ? true : value)));
   const revealAll = () => setRevealed(selected.map(() => true));
   const reset = () => {
-    setStage('intro'); setSelected([]); setRevealed([]); setDeck(tarotCards); setPreviewIndex(38); setTouchPreviewIndex(null); window.scrollTo({ top: 0, behavior: 'smooth' });
+    setStage('intro'); setSelected([]); setRevealed([]); setDeck(tarotCards); setPreviewIndex(null); window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const allRevealed = revealed.length > 0 && revealed.every(Boolean);
   const uprightCount = selected.filter((item) => !item.reversed).length;
@@ -159,7 +121,7 @@ export default function TarotPage() {
           <div className="section-heading"><p className="kicker">CHOOSE YOUR SPREAD</p><h2>今天，想看清哪件事？</h2><p>牌陣只保留真正有差異的三種。愛情、工作與綜合問題，都使用清楚有效的經典三張。</p></div>
           <div className="spread-grid">{spreadOptions.map((item) => <button key={item.id} className={`spread-option ${spread === item.id ? 'active' : ''}`} onClick={() => chooseSpread(item.id)}><span className="spread-check">{spread === item.id ? '✓' : ''}</span><small>{item.eyebrow}</small><div className={`mini-spread count-${item.count}`}>{Array.from({ length: item.count }).map((_, index) => <span key={index}><BackDesign small /></span>)}</div><strong>{item.name}</strong><p>{item.copy}</p></button>)}</div>
           {spread === 'three' && <div className="topic-block"><span>解讀主題</span><div className="topic-tabs">{topics.map((item) => <button key={item.id} className={topic === item.id ? 'active' : ''} onClick={() => setTopic(item.id)}><strong>{item.name}</strong><small>{item.hint}</small></button>)}</div></div>}
-          <label className="question-box" ref={questionRef}><span>你的問題 <small>選填，但越具體越有幫助</small></span><textarea value={question} onChange={(event) => setQuestion(event.target.value)} maxLength={160} placeholder="例如：我該如何改善目前的關係互動？" /><small>{question.length} / 160</small></label>
+          <label className="question-box" ref={questionRef}><span>你的問題 <small>選填，但越具體越有幫助</small></span><textarea ref={questionInputRef} value={question} onChange={(event) => setQuestion(event.target.value)} maxLength={160} placeholder="例如：我該如何改善目前的關係互動？" /><small>{question.length} / 160</small></label>
           <button className="ritual-button" onClick={startShuffle}><span>✦</span> 洗牌，進入選牌</button>
         </section>
       </>}
@@ -167,12 +129,14 @@ export default function TarotPage() {
       {stage === 'shuffle' && <section className="ritual-stage shuffle-stage" key={shuffleKey}><p className="kicker">SHUFFLING THE DECK</p><h1>把問題放在心裡</h1><p>不需要拖曳。牌正在重新排列，稍後直接點選有感覺的位置。</p><div className="shuffle-stack" aria-label="洗牌中">{Array.from({ length: 7 }).map((_, index) => <div className="shuffle-card" key={index}><BackDesign /></div>)}</div><div className="soft-loader"><span /></div></section>}
 
       {stage === 'choose' && <section className="choose-stage">
-        <div className="stage-heading"><p className="kicker">LISTEN TO YOUR FIRST INSTINCT</p><h1>憑直覺，選出 {currentSpread.count} 張牌</h1><p>點選你真正有感覺的位置。選中的牌會離開牌列並移到上方；確認前都能放回原位。</p></div>
+        <div className="stage-heading"><p className="kicker">LISTEN TO YOUR FIRST INSTINCT</p><h1>憑直覺，選出 {currentSpread.count} 張牌</h1><p>桌面將游標移過牌扇即可細看；手機輕點一次預覽，再點同一張完成選取。</p></div>
         <div className="selection-table">
         <div className="selection-tray">{Array.from({ length: currentSpread.count }).map((_, index) => { const item = selected[index]; return <div className="tray-slot" key={index}><span className="slot-label">{positionLabels[currentSpread.count][index]}</span>{item ? <button className="picked-card" onClick={() => unpick(item.deckIndex)} aria-label={`放回第 ${item.deckIndex + 1} 個位置的牌`}><BackDesign /><span className="remove-hint">點擊放回</span></button> : <div className="empty-card"><span>{index + 1}</span></div>}</div>; })}</div>
         <div className="selection-status"><span>{selected.length}</span> / {currentSpread.count} 張已選</div>
-        <div className="deck-field" aria-label="78 張牌，分成兩排弧形重疊排列；手機先點一下預覽，再點一次選牌">{deck.map((card, index) => { const column = index % 39; const cardStyle = { left: `${6 + column * (88 / 38)}%`, top: `${54 + Math.floor(index / 39) * 22}%`, zIndex: index + 1, '--deck-curve': `${Math.round(((column - 19) / 19) ** 2 * 20)}px`, '--deck-tilt': `${(column - 19) * .32}deg` } as CSSProperties; return selectedIndexes.has(index) ? <div className="deck-hole" style={cardStyle} key={card.id}><span>{index + 1}</span></div> : <button className={`deck-card ${previewIndex === index ? 'is-preview' : ''} ${touchPreviewIndex === index ? 'is-touch-preview' : ''}`} style={cardStyle} key={card.id} onClick={() => handleDeckCardClick(card, index)} aria-label={`第 ${index + 1} 個位置${touchPreviewIndex === index ? '，再點一次選取' : '，點擊預覽'}`}><BackDesign small />{touchPreviewIndex === index && <span className="preview-hint">再點一次選取</span>}</button>; })}</div>
-        <label className="deck-scrubber"><span>左右滑動找牌</span><input type="range" min="0" max={deck.length - 1} value={previewIndex} onChange={(event) => { setPreviewIndex(Number(event.target.value)); setTouchPreviewIndex(null); }} aria-label="滑動預覽牌的位置" /><small>{previewIndex + 1} / {deck.length}</small></label>
+        <div className="focus-space">
+          {previewIndex === null ? <div className="focus-placeholder"><span>☾</span><small>觸碰牌扇，聽見直覺</small></div> : <button className="focus-card" onClick={() => pick(deck[previewIndex], previewIndex)} aria-label={`選取第 ${previewIndex + 1} 個位置`}><BackDesign /><span>第 {previewIndex + 1} 張 · 再次點擊選取</span></button>}
+        </div>
+        <div className="deck-field" aria-label="78 張牌以弧形牌扇重疊排列；手機先點一下預覽，再點一次選牌">{deck.map((card, index) => { const distance = (index - 38.5) / 38.5; const cardStyle = { left: `${4 + index * (92 / 77)}%`, top: `${73 + Math.round(distance ** 2 * 13)}%`, zIndex: index + 1, '--deck-curve': '0px', '--deck-tilt': `${distance * 27}deg` } as CSSProperties; return selectedIndexes.has(index) ? <div className="deck-hole" style={cardStyle} key={card.id}><span>{index + 1}</span></div> : <button className={`deck-card ${previewIndex === index ? 'is-preview' : ''}`} style={cardStyle} key={card.id} onPointerEnter={() => previewCard(index)} onClick={() => handleDeckCardClick(card, index)} aria-label={`第 ${index + 1} 個位置${previewIndex === index ? '，再次點擊選取' : '，點擊預覽'}`}><BackDesign small /></button>; })}</div>
         </div>
         <div className="sticky-confirm"><button className="secondary-button" onClick={startShuffle}>重新洗牌</button><button className="ritual-button" disabled={selected.length !== currentSpread.count} onClick={confirm}>確認選牌 <span>→</span></button></div>
       </section>}

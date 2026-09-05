@@ -120,8 +120,8 @@ export default function TarotPage() {
         <section className="reading-room" id="reading-room">
           <div className="section-heading"><p className="kicker">CHOOSE YOUR SPREAD</p><h2>今天，想看清哪件事？</h2><p>牌陣只保留真正有差異的三種。愛情、工作與綜合問題，都使用清楚有效的經典三張。</p></div>
           <div className="spread-grid">{spreadOptions.map((item) => <button key={item.id} className={`spread-option ${spread === item.id ? 'active' : ''}`} onClick={() => chooseSpread(item.id)}><span className="spread-check">{spread === item.id ? '✓' : ''}</span><small>{item.eyebrow}</small><div className={`mini-spread count-${item.count}`}>{Array.from({ length: item.count }).map((_, index) => <span key={index}><BackDesign small /></span>)}</div><strong>{item.name}</strong><p>{item.copy}</p></button>)}</div>
-          {spread === 'three' && <div className="topic-block"><span>解讀主題</span><div className="topic-tabs">{topics.map((item) => <button key={item.id} className={topic === item.id ? 'active' : ''} onClick={() => setTopic(item.id)}><strong>{item.name}</strong><small>{item.hint}</small></button>)}</div></div>}
           <label className="question-box" ref={questionRef}><span>你的問題 <small>選填，但越具體越有幫助</small></span><textarea ref={questionInputRef} value={question} onChange={(event) => setQuestion(event.target.value)} maxLength={160} placeholder="例如：我該如何改善目前的關係互動？" /><small>{question.length} / 160</small></label>
+          {spread === 'three' && <div className="topic-block"><span>解讀主題</span><div className="topic-tabs">{topics.map((item) => <button key={item.id} className={topic === item.id ? 'active' : ''} onClick={() => setTopic(item.id)}><strong>{item.name}</strong><small>{item.hint}</small></button>)}</div></div>}
           <button className="ritual-button" onClick={startShuffle}><span>✦</span> 洗牌，進入選牌</button>
         </section>
       </>}

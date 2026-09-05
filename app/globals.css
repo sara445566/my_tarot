@@ -154,14 +154,31 @@ footer { min-height: 105px; padding: 22px; display: flex; align-items: center; j
 
 @media (max-width: 980px) {
   .site-header:after { display: none; }
-  .hero { grid-template-columns: 1fr; }.hero-copy { min-height: 600px; text-align: center; align-items: center; }.hero-copy:after { display: none; }.hero-cards { min-height: 610px; }
+  .hero { min-height: calc(100svh - 76px); grid-template-columns: minmax(0,.92fr) minmax(0,1.08fr); }
+  .hero-copy { min-height: 0; padding: clamp(52px,7vw,78px) clamp(24px,4.5vw,48px); text-align: center; align-items: center; }
+  .hero-copy:after { display: none; }
+  .hero h1 { font-size: clamp(44px,6.2vw,62px); }
+  .hero-cards { min-height: 0; padding: 50px 14px 34px; }
   .reading-room { display: block; }.section-heading { position: static; margin: 0 auto 55px; text-align: center; }.section-heading h2,.section-heading>p:last-child { margin-left: auto; margin-right: auto; }.section-heading:after { margin-left: auto; margin-right: auto; }
   .deck-field { grid-template-columns: repeat(10,1fr); }
 }
 
 @media (max-width: 620px) {
   .site-header { height: 68px; padding: 0 17px; }.deck-count { display: none; }.brand strong { font-size: 14px; }
-  .hero { min-height: auto; }.hero-copy { min-height: 535px; padding: 75px 25px 65px; }.hero-copy:before { left: 25px; top: 28px; }.hero h1 { font-size: 48px; }.hero-lead { font-size: 13px; }.hero-cards { min-height: 460px; padding: 45px 10px 30px; gap: 4px; }.hero-card .tarot-card { max-height: 380px; }.hero-cards:before { left: 15px; }.hero-cards:after { right: 8px; }
+  .hero { height: calc(100svh - 68px); min-height: 500px; grid-template-columns: 1fr; grid-template-rows: minmax(280px,56%) minmax(210px,44%); }
+  .hero-copy { min-height: 0; padding: 39px 22px 22px; justify-content: center; }
+  .hero-copy:before { left: 20px; top: 16px; font-size: 9px; }
+  .hero .kicker { font-size: 7px!important; letter-spacing: .22em; }
+  .hero h1 { margin: 12px 0 13px; font-size: clamp(32px,10.5vw,42px); line-height: 1.02; }
+  .hero-lead { max-width: 350px; font-size: 11px; line-height: 1.65; }
+  .primary-link { margin-top: 13px; padding: 9px 0 7px; gap: 36px; font-size: 10px; }
+  .hero-cards { min-height: 0; padding: 28px 7px 13px; gap: 4px; }
+  .hero-card .tarot-card { max-height: min(31svh,245px); }
+  .hero-card.center { transform: translateY(-5px)!important; }
+  .hero-card.right { transform: translateY(5px)!important; }
+  .hero-cards:before { top: 10px; left: 12px; font-size: 6px; }
+  .hero-cards:after { right: 7px; bottom: 5px; font-size: 6px; }
+  .orbit { width: 310px; }.orbit-two { width: 440px; }
   .reading-room { padding: 85px 15px; }.section-heading h2 { font-size: 42px; }.spread-option { min-height: 138px; padding: 15px 5px; grid-template-columns: 28px 95px 1fr 24px; column-gap: 10px; }.spread-option:hover,.spread-option.active { padding-left: 9px; }.mini-spread { height: 88px; }.mini-spread>span { width: 46px; }.mini-spread.count-3>span { width: 29px; }.spread-option>strong { font-size: 19px; }.spread-option>p { font-size: 10px; line-height: 1.55; }.topic-tabs { grid-template-columns: 1fr; }.topic-tabs button { border-right: 0; border-bottom: 1px solid var(--line); }.topic-tabs button:last-child { border-bottom: 0; }
   .ritual-stage,.choose-stage,.reading-stage { padding: 55px 13px 80px; }.stage-heading h1 { font-size: 39px; }.selection-tray { min-height: 190px; gap: 7px; }.tray-slot { width: 99px; }.picked-card,.empty-card { width: 94px; }.deck-field { padding: 10px; grid-template-columns: repeat(6,1fr); gap: 7px; }.sticky-confirm,.reading-actions { flex-direction: column; }.sticky-confirm button,.reading-actions button { width: 100%; }
   .reveal-grid { gap: 7px; }.reveal-item { width: 31vw; }.reveal-item>span { letter-spacing: .08em; }.card-title { display: none; }.interpretation { margin-top: 55px; }.reading-cards-copy article { min-height: 0; grid-template-columns: 1fr; }.reading-cards-copy header { grid-column: 1; grid-row: auto; margin-bottom: 20px; }.synthesis { padding: 38px 22px; }.synthesis:before { right: 18px; top: 18px; }

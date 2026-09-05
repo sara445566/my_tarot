@@ -13,6 +13,8 @@ export type TarotCard = {
   image: string;
 };
 
+const assetBase = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 type Seed = [string, string, string, string, string, string, string[]];
 
 const majorSeeds: Seed[] = [
@@ -120,7 +122,7 @@ export const tarotCards: TarotCard[] = [
     upright,
     reversed,
     action,
-    image: `/cards/major/${String(index).padStart(2,'0')}-${['fool','magician','high-priestess','empress','emperor','hierophant','lovers','chariot','strength','hermit','wheel-of-fortune','justice','hanged-man','death','temperance','devil','tower','star','moon','sun','judgement','world'][index]}.webp`,
+    image: `${assetBase}/cards/major/${String(index).padStart(2,'0')}-${['fool','magician','high-priestess','empress','emperor','hierophant','lovers','chariot','strength','hermit','wheel-of-fortune','justice','hanged-man','death','temperance','devil','tower','star','moon','sun','judgement','world'][index]}.webp`,
   })),
   ...Object.entries(minor).flatMap(([suit, group]) => group.seeds.map(([number,rank,en,upright,reversed,action,keywords], index) => ({
     id: `${suit}-${index + 1}`,
@@ -132,7 +134,7 @@ export const tarotCards: TarotCard[] = [
     upright,
     reversed,
     action,
-    image: `/cards/${suit}/${String(index + 1).padStart(2,'0')}-${filenames[index]}.webp`,
+    image: `${assetBase}/cards/${suit}/${String(index + 1).padStart(2,'0')}-${filenames[index]}.webp`,
   }))),
 ];
 

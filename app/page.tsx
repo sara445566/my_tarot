@@ -63,18 +63,20 @@ export default function TarotPage() {
   const [selected, setSelected] = useState<Selection[]>([]);
   const [revealed, setRevealed] = useState<boolean[]>([]);
   const [shuffleKey, setShuffleKey] = useState(0);
+  const [previewIndex, setPreviewIndex] = useState(38);
 
   const currentSpread = spreadOptions.find((item) => item.id === spread)!;
   const selectedIndexes = useMemo(() => new Set(selected.map((item) => item.deckIndex)), [selected]);
   const topicName = topics.find((item) => item.id === topic)?.name ?? '綜合';
 
   const startShuffle = () => {
-    setStage('shuffle'); setSelected([]); setRevealed([]); setShuffleKey((value) => value + 1);
+    setStage('shuffle'); setSelected([]); setRevealed([]); setPreviewIndex(38); setShuffleKey((value) => value + 1);
     window.setTimeout(() => { setDeck(shuffle(tarotCards)); setStage('choose'); }, 1150);
   };
   const pick = (card: TarotCard, deckIndex: number) => {
     if (selectedIndexes.has(deckIndex) || selected.length >= currentSpread.count) return;
     setSelected((items) => [...items, { card, deckIndex, reversed: Math.random() < 0.32 }]);
+    setPreviewIndex((deckIndex + 1) % deck.length);
   };
   const unpick = (deckIndex: number) => setSelected((items) => items.filter((item) => item.deckIndex !== deckIndex));
   const confirm = () => {
@@ -84,7 +86,7 @@ export default function TarotPage() {
   const revealCard = (index: number) => setRevealed((items) => items.map((value, i) => (i === index ? true : value)));
   const revealAll = () => setRevealed(selected.map(() => true));
   const reset = () => {
-    setStage('intro'); setSelected([]); setRevealed([]); setDeck(tarotCards); window.scrollTo({ top: 0, behavior: 'smooth' });
+    setStage('intro'); setSelected([]); setRevealed([]); setDeck(tarotCards); setPreviewIndex(38); window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const allRevealed = revealed.length > 0 && revealed.every(Boolean);
   const uprightCount = selected.filter((item) => !item.reversed).length;
@@ -118,7 +120,8 @@ export default function TarotPage() {
         <div className="selection-table">
         <div className="selection-tray">{Array.from({ length: currentSpread.count }).map((_, index) => { const item = selected[index]; return <div className="tray-slot" key={index}><span className="slot-label">{positionLabels[currentSpread.count][index]}</span>{item ? <button className="picked-card" onClick={() => unpick(item.deckIndex)} aria-label={`放回第 ${item.deckIndex + 1} 個位置的牌`}><BackDesign /><span className="remove-hint">點擊放回</span></button> : <div className="empty-card"><span>{index + 1}</span></div>}</div>; })}</div>
         <div className="selection-status"><span>{selected.length}</span> / {currentSpread.count} 張已選</div>
-        <div className="deck-field" aria-label="78 張牌，分成兩排重疊排列，點擊選牌">{deck.map((card, index) => selectedIndexes.has(index) ? <div className="deck-hole" style={{ '--deck-index': index, '--deck-row': Math.floor(index / 39), '--deck-column': index % 39 } as CSSProperties} key={card.id}><span>{index + 1}</span></div> : <button className="deck-card" style={{ '--deck-index': index, '--deck-row': Math.floor(index / 39), '--deck-column': index % 39 } as CSSProperties} key={card.id} onClick={() => pick(card, index)} aria-label={`選擇第 ${index + 1} 個位置`}><BackDesign small /></button>)}</div>
+        <div className="deck-field" aria-label="78 張牌，分成兩排弧形重疊排列，點擊選牌">{deck.map((card, index) => { const column = index % 39; const cardStyle = { '--deck-index': index, '--deck-row': Math.floor(index / 39), '--deck-column': column, '--deck-curve': `${Math.round(((column - 19) / 19) ** 2 * 20)}px`, '--deck-tilt': `${(column - 19) * .32}deg` } as CSSProperties; return selectedIndexes.has(index) ? <div className="deck-hole" style={cardStyle} key={card.id}><span>{index + 1}</span></div> : <button className={`deck-card ${previewIndex === index ? 'is-preview' : ''}`} style={cardStyle} key={card.id} onClick={() => pick(card, index)} aria-label={`選擇第 ${index + 1} 個位置`}><BackDesign small /></button>; })}</div>
+        <label className="deck-scrubber"><span>左右滑動找牌</span><input type="range" min="0" max={deck.length - 1} value={previewIndex} onChange={(event) => setPreviewIndex(Number(event.target.value))} aria-label="滑動預覽牌的位置" /><small>{previewIndex + 1} / {deck.length}</small></label>
         </div>
         <div className="sticky-confirm"><button className="secondary-button" onClick={startShuffle}>重新洗牌</button><button className="ritual-button" disabled={selected.length !== currentSpread.count} onClick={confirm}>確認選牌 <span>→</span></button></div>
       </section>}

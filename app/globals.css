@@ -43,13 +43,18 @@ main { min-height: 100vh; overflow: hidden; }
 .hero h1 { max-width: 620px; margin: 20px 0 28px; font-family: "Noto Serif TC", "Songti TC", serif; font-size: clamp(50px, 6.4vw, 96px); font-weight: 500; line-height: 1.04; letter-spacing: .02em; }
 .hero h1 em { display: inline-block; color: #a76e71; font-style: normal; }
 .hero-lead { max-width: 490px; margin: 0; color: #686376; font-size: 14px; line-height: 2; }
-.primary-link { width: fit-content; margin-top: 38px; padding: 11px 0 10px; display: inline-flex; align-items: center; gap: 45px; color: var(--ink); border-bottom: 1px solid var(--ink); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-decoration: none; transition: gap .3s ease; }
-.primary-link:hover { gap: 53px; }
-.primary-link span { width: 34px; aspect-ratio: 1; display: grid; place-items: center; position: relative; color: var(--gold); border: 1px solid currentColor; border-radius: 50%; font-size: 0; box-shadow: 0 0 0 4px rgba(184,130,62,.08), inset 0 0 10px rgba(184,130,62,.13); transition: transform .65s cubic-bezier(.2,.75,.2,1), box-shadow .3s ease; }
-.primary-link span:before { content: "✦"; font-size: 12px; line-height: 1; }
-.primary-link span:after { content: ""; width: 54%; aspect-ratio: 1; position: absolute; border: 1px solid currentColor; transform: rotate(45deg); }
-.primary-link:hover span, .primary-link:focus-visible span { transform: rotate(135deg); box-shadow: 0 0 0 5px rgba(184,130,62,.1), 0 0 16px rgba(184,130,62,.35), inset 0 0 9px rgba(184,130,62,.15); }
-.primary-link:active span { transform: rotate(225deg) scale(.9); }
+.primary-link { width: 116px; aspect-ratio: 1; margin-top: 30px; padding: 0; display: grid; place-items: center; position: relative; isolation: isolate; color: transparent; border: 1px solid rgba(184,130,62,.72); border-radius: 50%; font-size: 0; text-decoration: none; background: repeating-conic-gradient(from 0deg,rgba(184,130,62,.22) 0 1deg,transparent 1deg 30deg), radial-gradient(circle,transparent 0 56%,rgba(184,130,62,.08) 57% 58%,transparent 59%); box-shadow: 0 0 0 4px rgba(184,130,62,.05), inset 0 0 18px rgba(184,130,62,.08); transition: border-color .35s ease, box-shadow .35s ease, transform .35s ease; }
+.primary-link:before { content: "開始占卜"; min-width: 64px; padding: 7px 4px; position: relative; z-index: 4; color: var(--ink); background: rgba(248,237,231,.92); font-size: 10px; font-weight: 800; letter-spacing: .14em; line-height: 1; }
+.primary-link:after { content: ""; position: absolute; inset: 8px; border: 1px dashed rgba(184,130,62,.72); border-radius: 50%; }
+.primary-link span { position: absolute; inset: 20px; color: var(--gold); border: 1px solid rgba(184,130,62,.68); border-radius: 50%; font-size: 0; }
+.primary-link span:before, .primary-link span:after { content: ""; position: absolute; inset: 7px; border: 1px solid currentColor; transform: rotate(45deg); }
+.primary-link span:after { inset: 14px; border-radius: 50%; transform: none; box-shadow: 0 0 0 3px rgba(184,130,62,.08); }
+.primary-link:hover, .primary-link:focus-visible { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 0 0 5px rgba(184,130,62,.08), 0 0 24px rgba(184,130,62,.36), inset 0 0 22px rgba(184,130,62,.15); }
+.primary-link:hover:after, .primary-link:focus-visible:after { animation: sigilClockwise 7s linear infinite; }
+.primary-link:hover span, .primary-link:focus-visible span { animation: sigilCounter 9s linear infinite; }
+.primary-link:active { transform: translateY(0) scale(.96); }
+@keyframes sigilClockwise { to { transform: rotate(360deg); } }
+@keyframes sigilCounter { to { transform: rotate(-360deg); } }
 .hero-cards { min-height: 620px; padding: 42px; position: relative; display: grid; grid-template-columns: repeat(3, 1fr); align-items: stretch; gap: 8px; overflow: hidden; background: var(--blush); }
 .hero-cards:before, .hero-cards:after { position: absolute; z-index: 6; color: rgba(25,25,43,.36); font-size: 8px; letter-spacing: .28em; }
 .hero-cards:before { content: "THE CELESTIAL ARCHIVE"; top: 19px; left: 42px; }
@@ -169,15 +174,15 @@ footer { min-height: 105px; padding: 22px; display: flex; align-items: center; j
 
 @media (max-width: 620px) {
   .site-header { height: 68px; padding: 0 17px; }.deck-count { display: none; }.brand strong { font-size: 14px; }
-  .hero { height: calc(100svh - 68px); min-height: 500px; grid-template-columns: 1fr; grid-template-rows: minmax(280px,56%) minmax(210px,44%); }
-  .hero-copy { min-height: 0; padding: 39px 22px 22px; justify-content: center; }
-  .hero-copy:before { left: 20px; top: 16px; font-size: 9px; }
+  .hero { height: calc(100svh - 68px); min-height: 500px; grid-template-columns: 1fr; grid-template-rows: minmax(300px,60%) minmax(190px,40%); }
+  .hero-copy { min-height: 0; padding: 26px 22px 10px; justify-content: center; }
+  .hero-copy:before { left: 20px; top: 10px; font-size: 9px; }
   .hero .kicker { font-size: 7px!important; letter-spacing: .22em; }
   .hero h1 { margin: 12px 0 13px; font-size: clamp(32px,10.5vw,42px); line-height: 1.02; }
   .hero-lead { max-width: 350px; font-size: 11px; line-height: 1.65; }
-  .primary-link { margin-top: 13px; padding: 6px 0 7px; gap: 31px; font-size: 10px; }
-  .primary-link span { width: 29px; }
-  .primary-link span:before { font-size: 10px; }
+  .primary-link { width: 88px; margin-top: 8px; }
+  .primary-link:before { min-width: 56px; padding: 6px 2px; font-size: 9px; }
+  .primary-link span { inset: 17px; }
   .hero-cards { min-height: 0; padding: 28px 7px 13px; gap: 4px; }
   .hero-card .tarot-card { max-height: min(31svh,245px); }
   .hero-card.center { transform: translateY(-5px)!important; }
